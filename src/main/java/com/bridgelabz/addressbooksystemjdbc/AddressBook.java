@@ -34,7 +34,7 @@ public class AddressBook implements AddressBookIF {
 	public boolean isPresent = false;
 	
 	public enum IOService {
-		CONSOLE_IO, FILE_IO
+		CONSOLE_IO, FILE_IO, DB_IO
 	}
 	
 	public String getAddressBookName() {
