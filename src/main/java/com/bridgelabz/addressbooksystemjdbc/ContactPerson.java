@@ -25,6 +25,21 @@ public class ContactPerson {
 	@CsvBindByName(column = "Zip Code")
 	private long zip;
 	
+	public ContactPerson(String firstName, String lastName, String email, long phoneNumber, String city, String state, long zip) {
+		
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+	}
+	
+	public ContactPerson() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
