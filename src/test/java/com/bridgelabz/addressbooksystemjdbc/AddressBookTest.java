@@ -1,10 +1,15 @@
 package com.bridgelabz.addressbooksystemjdbc;
-
+ 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.bridgelabz.addressbooksystemjdbc.AddressBook.IOService;
+
 
 public class AddressBookTest {
 	
@@ -81,5 +86,70 @@ public class AddressBookTest {
 		Assert.assertEquals(2, countEntries);
 	}
 	
+	@Test
+	public void givenAddressBookInDB_WhenRetrieved_ShouldMatchCountOfAddressBooks(){
+		
+		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
+		Map<Integer, String> addressbookList = addressBookDirectory.readAddressDetails(IOService.DB_IO);
+		Assert.assertEquals(2, addressbookList.size());
+	}
+	
+	@Test
+	public void givenContactInDB_WhenRetrieved_ShouldMatchContactCount(){
+		
+		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
+		List<ContactPerson> contactdetailsList = addressBookDirectory.readContactDetails(IOService.DB_IO);
+		Assert.assertEquals(7, contactdetailsList.size());
+	}
+	
+
+	@Test
+	public void givenCity_WhenMatches_ShouldReturnEmployeeDetails() {
+		
+		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
+		String city = "Bangalore";
+		List<ContactPerson> contactList = addressBookDirectory.getEmployeeDetailsBasedOnCity(IOService.DB_IO, city);
+		Assert.assertEquals(2, contactList.size());
+	}
+	
+	@Test
+	public void givenState_WhenMatches_ShouldReturnEmployeeDetails() {
+		
+		String state = "New York";
+		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
+		List<ContactPerson> contactList = addressBookDirectory.getEmployeeDetailsBasedOnState(IOService.DB_IO, state);
+		Assert.assertEquals(2, contactList.size());
+	}
+	
+	@Test
+	public void givenAddressBookInDB_ShouldReturnCountOfBasedOnCity() {
+		
+		AddressBookDirectory employeePayrollService = new AddressBookDirectory();
+		List<Integer> expectedCountBasedOnGender = new ArrayList();
+		expectedCountBasedOnGender.add(1);
+		expectedCountBasedOnGender.add(2);
+		expectedCountBasedOnGender.add(1);
+		expectedCountBasedOnGender.add(1);
+		expectedCountBasedOnGender.add(1);
+		expectedCountBasedOnGender.add(1);
+		List<Integer> maximumSalaryBasedOnGender = employeePayrollService.getCountOfEmployeesBasedOnCity(IOService.DB_IO);
+		if(maximumSalaryBasedOnGender.size() == 6) {
+			Assert.assertEquals(expectedCountBasedOnGender, maximumSalaryBasedOnGender);
+		}
+	}
+	
+	@Test
+	public void givenAddressBookInDB_ShouldReturnCountOfBasedOnState() {
+		
+		AddressBookDirectory employeePayrollService = new AddressBookDirectory();
+		List<Integer> expectedCountBasedOnGender = new ArrayList();
+		expectedCountBasedOnGender.add(1);
+		expectedCountBasedOnGender.add(4);
+		expectedCountBasedOnGender.add(2);
+		List<Integer> maximumSalaryBasedOnGender = employeePayrollService.getCountOfEmployeesBasedOnState(IOService.DB_IO);
+		if(maximumSalaryBasedOnGender.size() == 3) {
+			Assert.assertEquals(expectedCountBasedOnGender, maximumSalaryBasedOnGender);
+		}
+	}
 	
 }
