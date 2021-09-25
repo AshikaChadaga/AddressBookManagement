@@ -24,6 +24,8 @@ dependencies {
     compile 'com.opencsv:opencsv:4.0'
     
     compile 'com.google.code.gson:gson:2.2.+'
+    
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.49'
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:28.0-jre'
