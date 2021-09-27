@@ -101,4 +101,23 @@ public class ContactPerson {
 		
 		return "First Name - "+firstName+", Last Name - "+lastName+", Phone Number - "+phoneNumber+", Email - "+email+", City - "+city+", State - "+state+", Zip Code - "+zip;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		
+		if(this == object)
+			return true;
+		
+		if(object == null || getClass() != object.getClass())
+			return false;
+		
+		ContactPerson that = (ContactPerson) object;
+		return firstName.equals(that.firstName) 
+				&& lastName.equals(that.lastName) 
+				&& Long.compare(that.phoneNumber,  phoneNumber) == 0 
+				&&  email.equals(that.email) 
+				&& city.equals(that.city) 
+				&& state.equals(that.state) 
+				&& Long.compare(that.zip,  zip) == 0;
+	}
 }
