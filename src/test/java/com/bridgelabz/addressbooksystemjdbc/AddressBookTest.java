@@ -1,6 +1,6 @@
 package com.bridgelabz.addressbooksystemjdbc;
  
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
 import java.util.Map;
 
@@ -124,7 +124,7 @@ public class AddressBookTest {
 	@Test
 	public void givenAddressBookInDB_ShouldReturnCountOfBasedOnCity() {
 		
-		AddressBookDirectory employeePayrollService = new AddressBookDirectory();
+		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
 		List<Integer> expectedCountBasedOnGender = new ArrayList();
 		expectedCountBasedOnGender.add(1);
 		expectedCountBasedOnGender.add(2);
@@ -132,7 +132,7 @@ public class AddressBookTest {
 		expectedCountBasedOnGender.add(1);
 		expectedCountBasedOnGender.add(1);
 		expectedCountBasedOnGender.add(1);
-		List<Integer> maximumSalaryBasedOnGender = employeePayrollService.getCountOfEmployeesBasedOnCity(IOService.DB_IO);
+		List<Integer> maximumSalaryBasedOnGender = addressBookDirectory.getCountOfEmployeesBasedOnCity(IOService.DB_IO);
 		if(maximumSalaryBasedOnGender.size() == 6) {
 			Assert.assertEquals(expectedCountBasedOnGender, maximumSalaryBasedOnGender);
 		}
@@ -141,15 +141,27 @@ public class AddressBookTest {
 	@Test
 	public void givenAddressBookInDB_ShouldReturnCountOfBasedOnState() {
 		
-		AddressBookDirectory employeePayrollService = new AddressBookDirectory();
+		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
 		List<Integer> expectedCountBasedOnGender = new ArrayList();
 		expectedCountBasedOnGender.add(1);
 		expectedCountBasedOnGender.add(4);
 		expectedCountBasedOnGender.add(2);
-		List<Integer> maximumSalaryBasedOnGender = employeePayrollService.getCountOfEmployeesBasedOnState(IOService.DB_IO);
+		List<Integer> maximumSalaryBasedOnGender = addressBookDirectory.getCountOfEmployeesBasedOnState(IOService.DB_IO);
 		if(maximumSalaryBasedOnGender.size() == 3) {
 			Assert.assertEquals(expectedCountBasedOnGender, maximumSalaryBasedOnGender);
 		}
+	}
+	
+	@Test 
+	public void givenNewSalaryForEmployee_WhenUpdated_ShouldSyncWithDB() {
+		
+		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
+		List<ContactPerson> employeePayrollData = addressBookDirectory.readContactDetails(IOService.DB_IO);
+		addressBookDirectory.updateContactLastName("Rosa", "Ramirez");
+		
+		boolean result = addressBookDirectory.checkContactDetailsInSyncWithDB("Rosa");
+		Assert.assertTrue(result);
+		
 	}
 	
 }
