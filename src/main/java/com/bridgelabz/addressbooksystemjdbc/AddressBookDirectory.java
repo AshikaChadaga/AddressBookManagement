@@ -126,7 +126,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		for(AddressBook addressBook : addressBookDirectory.values()) {
 			ArrayList<ContactPerson> contactList = addressBook.getContact();
 			contactList.stream()
-				.filter(person -> person.getFirstName().equals(personName) && person.getCity().equals(cityName))
+				.filter(person -> person.getFirstName().equals(personName) && person.address.getCity().equals(cityName))
 				.forEach(person -> System.out.println(person));
 			
 		}		
@@ -143,7 +143,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		for(AddressBook addressBook : addressBookDirectory.values()) {
 			ArrayList<ContactPerson> contactList = ((AddressBook) addressBook).getContact();
 			contactList.stream()
-				.filter(person -> person.getFirstName().equals(personName) && person.getState().equals(stateName))
+				.filter(person -> person.getFirstName().equals(personName) && person.address.getState().equals(stateName))
 				.forEach(person -> System.out.println(person));
 			
 		}
@@ -158,7 +158,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		
 		listToDisplay.values().stream()
 			.map(region -> region.stream()
-				.filter(person -> person.getState().equals(regionName) || person.getCity().equals(regionName)))
+				.filter(person -> person.address.getState().equals(regionName) || person.address.getCity().equals(regionName)))
 				.forEach(person -> person.forEach(personDetails -> System.out.println(personDetails)));
 	}
 	
@@ -170,7 +170,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		
 		long countPeople = listToDisplay.values().stream()
 				.map(region -> region.stream()
-					.filter(person -> person.getState().equals(regionName) || person.getCity().equals(regionName)))
+					.filter(person -> person.address.getState().equals(regionName) || person.address.getCity().equals(regionName)))
 					.count();
 					
 		System.out.println("Number of People residing in " + regionName+" are: "+countPeople+"\n");

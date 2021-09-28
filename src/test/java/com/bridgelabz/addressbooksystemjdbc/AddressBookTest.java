@@ -38,9 +38,9 @@ public class AddressBookTest {
 		person.setLastName(lastName);
 		person.setEmail(email);
 		person.setPhoneNumber(phoneNumber);
-		person.setCity(city);
-		person.setState(state);
-		person.setZip(zipCode);
+		person.address.setCity(city);
+		person.address.setState(state);
+		person.address.setZip(zipCode);
 		
 		addressBook.addContact(firstName, person);
 		
@@ -55,9 +55,9 @@ public class AddressBookTest {
 		person.setLastName(lastName);
 		person.setEmail(email);
 		person.setPhoneNumber(phoneNumber);
-		person.setCity(city);
-		person.setState(state);
-		person.setZip(zipCode);
+		person.address.setCity(city);
+		person.address.setState(state);
+		person.address.setZip(zipCode);
 		
 		addressBook.addContact(firstName, person);
 		
