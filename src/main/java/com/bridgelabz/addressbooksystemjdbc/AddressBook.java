@@ -30,9 +30,12 @@ public class AddressBook implements AddressBookIF {
 	public Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
 	public static HashMap<String, ArrayList<ContactPerson>> personByCity  = new HashMap<String, ArrayList<ContactPerson>>();
 	public static HashMap<String, ArrayList<ContactPerson>> personByState = new HashMap<String, ArrayList<ContactPerson>>();
-	public String addressBookName;
 	public boolean isPresent = false;
 	
+	public String addressBookName;
+	public int addressBookId;
+	public String addressBookType;
+
 	public enum IOService {
 		CONSOLE_IO, FILE_IO, DB_IO
 	}
@@ -45,10 +48,25 @@ public class AddressBook implements AddressBookIF {
 		this.addressBookName = addressBookName;
 	}
 	
+	public int getAddressBookId() {
+		return addressBookId;
+	}
+
+	public void setAddressBookId(int addressBookId) {
+		this.addressBookId = addressBookId;
+	}
+	
 	public ArrayList<ContactPerson> getContact() {
 		return new ArrayList<ContactPerson>(contactList.values());
 	}
 
+	public String getAddressBookType() {
+		return addressBookType;
+	}
+
+	public void setAddressBookType(String addressBookType) {
+		this.addressBookType = addressBookType;
+	}
 
 	@Override
 	public void operation() {
@@ -139,7 +157,7 @@ public class AddressBook implements AddressBookIF {
 	public void createContactPerson(Scanner scannerObject) {
 		
 		ContactPerson person = new ContactPerson();
-		
+		Address address = new Address();
 		System.out.println("Enter First Name: ");
 		String firstName = scannerObject.next();
 		
@@ -175,9 +193,10 @@ public class AddressBook implements AddressBookIF {
 			person.setLastName(lastName);
 			person.setPhoneNumber(phoneNumber);
 			person.setEmail(email);
-			person.setCity(city);
-			person.setState(state);
-			person.setZip(zipCode);
+			address.setCity(city);
+			address.setState(state);
+			address.setZip(zipCode);
+			person.setAddress(address);
 			addPersonToCity(person);
 			addPersonToState(person);
 			
@@ -194,25 +213,25 @@ public class AddressBook implements AddressBookIF {
 	
 	@Override	
 	public void addPersonToCity(ContactPerson contact) {
-		if (personByCity.containsKey(contact.getCity())) {
-			personByCity.get(contact.getCity()).add(contact);
+		if (personByCity.containsKey(contact.getAddress().getCity())) {
+			personByCity.get(contact.getAddress().getCity()).add(contact);
 		}
 		else {
 			ArrayList<ContactPerson> cityList = new ArrayList<ContactPerson>();
 			cityList.add(contact);
-			personByCity.put(contact.getCity(), cityList);
+			personByCity.put(contact.getAddress().getCity(), cityList);
 		}
 	}
 	
 	@Override
 	public void addPersonToState(ContactPerson contact) {
-		if (personByState.containsKey(contact.getState())) {			
-			personByState.get(contact.getState()).add(contact);
+		if (personByState.containsKey(contact.getAddress().getState())) {			
+			personByState.get(contact.getAddress().getState()).add(contact);
 		}
 		else {
 			ArrayList<ContactPerson> stateList = new ArrayList<ContactPerson>();
 			stateList.add(contact);
-			personByState.put(contact.getState(), stateList);
+			personByState.put(contact.getAddress().getState(), stateList);
 		}
 	}
 	
@@ -226,7 +245,6 @@ public class AddressBook implements AddressBookIF {
 		
 		if(contactList.containsKey(firstName)) {
 			person = contactList.get(firstName);
-			
 			System.out.println("\nChoose the attribute you want to change:");
 			System.out.println("1.Last Name\n2.Phone Number\n3.Email\n4.City\n5.State\n6.ZipCode");
 			int choice = scannerObject.nextInt();
@@ -250,17 +268,17 @@ public class AddressBook implements AddressBookIF {
 			case 4:
 				System.out.println("Enter the correct City :");
 				String city = scannerObject.next();
-				person.setCity(city);
+				person.address.setCity(city);
 				break;
 			case 5:
 				System.out.println("Enter the correct State :");
 				String state = scannerObject.next();
-				person.setState(state);
+				person.address.setState(state);
 				break;
 			case 6:
 				System.out.println("Enter the correct ZipCode :");
 				long zip = scannerObject.nextLong();
-				person.setZip(zip);
+				person.address.setZip(zip);
 				break;
 			}
 		}
@@ -322,19 +340,19 @@ public class AddressBook implements AddressBookIF {
 					break;
 				
 			case 2: sortedContactList = contactList.values().stream()
-					.sorted((firstperson, secondperson) -> firstperson.getCity().compareTo(secondperson.getCity()))
+					.sorted((firstperson, secondperson) -> firstperson.address.getCity().compareTo(secondperson.address.getCity()))
 					.collect(Collectors.toList());
 					printSortedList(sortedContactList);
 					break;
 				
 			case 3: sortedContactList = contactList.values().stream()
-					.sorted((firstperson, secondperson) -> firstperson.getState().compareTo(secondperson.getState()))
+					.sorted((firstperson, secondperson) -> firstperson.address.getState().compareTo(secondperson.address.getState()))
 					.collect(Collectors.toList());
 					printSortedList(sortedContactList);
 					break;
 				
 			case 4: sortedContactList = contactList.values().stream()
-					.sorted((firstperson, secondperson) -> Long.valueOf(firstperson.getZip()).compareTo(Long.valueOf(secondperson.getZip())))
+					.sorted((firstperson, secondperson) -> Long.valueOf(firstperson.address.getZip()).compareTo(Long.valueOf(secondperson.address.getZip())))
 					.collect(Collectors.toList());
 					printSortedList(sortedContactList);
 					break;
@@ -451,9 +469,9 @@ public class AddressBook implements AddressBookIF {
             	System.out.println("{");
                 System.out.println("Firstname : " + contact.getFirstName());
                 System.out.println("Lastname : " + contact.getLastName());
-                System.out.println("City : " + contact.getCity());
-                System.out.println("State : " + contact.getState());
-                System.out.println("Zip Code : " + contact.getZip());
+                System.out.println("City : " + contact.address.getCity());
+                System.out.println("State : " + contact.address.getState());
+                System.out.println("Zip Code : " + contact.address.getZip());
                 System.out.println("Phone number : " + contact.getPhoneNumber());
                 System.out.println("Email : " + contact.getEmail());
                 System.out.println("}\n");
