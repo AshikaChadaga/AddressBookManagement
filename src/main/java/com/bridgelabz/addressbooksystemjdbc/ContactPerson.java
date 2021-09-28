@@ -16,28 +16,20 @@ public class ContactPerson {
 	@CsvBindByName(column = "Phone Number")
 	private long phoneNumber;
 	
-	@CsvBindByName(column = "City")
-	private String city;
-	
-	@CsvBindByName(column = "State")
-	private String state;
-	
-	@CsvBindByName(column = "Zip Code")
-	private long zip;
-	
+	public Address address = new Address();
+
 	public ContactPerson(String firstName, String lastName, String email, long phoneNumber, String city, String state, long zip) {
 		
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.city = city;
-		this.state = state;
-		this.zip = zip;
+		this.address.setCity(city);
+		this.address.setState(state);
+		this.address.setZip(zip);
 	}
 	
 	public ContactPerson() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public String getFirstName() {
@@ -71,34 +63,18 @@ public class ContactPerson {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public Address getAddress() {
+		return address;
+	}
 
-	public String getCity() {
-		return city;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
-	
-	public String getState() {
-		return state;
-	}
-	
-	public long getZip() {
-		return zip;
-	}
-	
-	public void setCity(String city) {
-		this.city = city;
-	}
-	
-	public void setState(String state) {
-		this.state = state;
-	}
-	
-	public void setZip(long zip) {
-		this.zip = zip;
-	}
+
 	
 	@Override
 	public String toString() {
 		
-		return "First Name - "+firstName+", Last Name - "+lastName+", Phone Number - "+phoneNumber+", Email - "+email+", City - "+city+", State - "+state+", Zip Code - "+zip;
+		return "First Name - "+firstName+", Last Name - "+lastName+", Phone Number - "+phoneNumber+", Email - "+email+", City - "+address.getCity()+", State - "+address.getState()+", Zip Code - "+address.getZip();
 	}
 }
