@@ -91,9 +91,9 @@ public class ContactPerson {
 		return firstName.equals(that.firstName) 
 				&& lastName.equals(that.lastName) 
 				&& Long.compare(that.phoneNumber,  phoneNumber) == 0 
-				&&  email.equals(that.email) 
-				&& city.equals(that.city) 
-				&& state.equals(that.state) 
-				&& Long.compare(that.zip,  zip) == 0;
+				&& email.equals(that.email) 
+				&& address.getCity().equals(that.address.getCity()) 
+				&& address.getState().equals(that.address.getState()) 
+				&& Long.compare(that.address.getZip(), address.getZip()) == 0;
 	}
 }
