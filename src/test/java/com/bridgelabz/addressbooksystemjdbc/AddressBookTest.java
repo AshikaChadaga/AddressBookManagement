@@ -1,6 +1,6 @@
 package com.bridgelabz.addressbooksystemjdbc;
  
-import java.util.ArrayList; 
+import java.util.ArrayList;  
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.bridgelabz.addressbooksystemjdbc.AddressBook.IOService;
+
 
 
 public class AddressBookTest {
@@ -156,12 +157,22 @@ public class AddressBookTest {
 	public void givenNewSalaryForEmployee_WhenUpdated_ShouldSyncWithDB() {
 		
 		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
-		List<ContactPerson> employeePayrollData = addressBookDirectory.readContactDetails(IOService.DB_IO);
+		List<ContactPerson> contactData = addressBookDirectory.readContactDetails(IOService.DB_IO);
 		addressBookDirectory.updateContactLastName("Rosa", "Ramirez");
 		
 		boolean result = addressBookDirectory.checkContactDetailsInSyncWithDB("Rosa");
 		Assert.assertTrue(result);
 		
+	}
+	
+	@Test
+	public void givenStartDateRange_WhenMatchesUsingPreparedStatement_ShouldReturnEmployeeDetails() {
+		
+		String startDate = "2013-01-01";
+		String endDate = "2021-01-01";
+		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
+		List<ContactPerson> contactData = addressBookDirectory.getContactsBasedOnStartDateUsingPreparedStatement(IOService.DB_IO, startDate, endDate);
+		Assert.assertEquals(5, contactData.size());
 	}
 	
 }
