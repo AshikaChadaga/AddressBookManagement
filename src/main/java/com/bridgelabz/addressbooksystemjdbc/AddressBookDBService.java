@@ -249,7 +249,7 @@ public class AddressBookDBService {
 		return contactList;
 	}
 	
-	public ContactPerson addNewContactToContacts(int contactId, String firstName, String lastName, long phoneNumber, String email, int addressId, String city, String state, long zip, String dateAdded) {
+	public ContactPerson addNewContactToContacts(int contactId, String firstName, String lastName, long phoneNumber, String email, int addressId, String dateAdded, int addressBookId) {
 		
 		int id = -1;
 		Connection connection = null;
@@ -264,7 +264,7 @@ public class AddressBookDBService {
 		}
 		try (Statement statement = connection.createStatement()){
 			
-			String sql = String.format("INSERT INTO contact (contact_id, first_name, last_name, phone_number, email, address_id, date_added) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');", contactId, firstName, lastName, phoneNumber, email, addressId, dateAdded);
+			String sql = String.format("INSERT INTO contact (contact_id, first_name, last_name, phone_number, email, address_id, date_added) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')", contactId, firstName, lastName, phoneNumber, email, addressId, dateAdded);
 			
 			int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);
 			if(rowAffected == 1) {
@@ -272,14 +272,13 @@ public class AddressBookDBService {
 				if(resultSet.next())
 					id = resultSet.getInt(1);
 			}
-			contactPerson = new ContactPerson(id, firstName, lastName, email, phoneNumber, city, state, zip);
+			contactPerson = new ContactPerson(id, firstName, lastName, email, phoneNumber);
 			
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 			try {
 				connection.rollback();
-				return contactPerson;
 			} catch (SQLException exception) {
 				exception.printStackTrace();
 			}
@@ -287,10 +286,10 @@ public class AddressBookDBService {
 		
 		try(Statement statement = connection.createStatement()){
 
-			String sqlQuery = String.format("INSERT INTO address VALUES ('%s', '%s', '%s', '%s')",addressId, city, state, zip);
+			String sqlQuery = String.format("INSERT INTO addressbook_contact VALUES ('%s', '%s')",contactId, addressBookId);
 			int rowAffected = statement.executeUpdate(sqlQuery);
 			if (rowAffected == 1) {
-				contactPerson = new ContactPerson(contactId, firstName, lastName, email, phoneNumber, city, state, zip);
+				contactPerson = new ContactPerson(contactId, firstName, lastName, email, phoneNumber);
 			}			
 		}
 		catch(SQLException e) {
