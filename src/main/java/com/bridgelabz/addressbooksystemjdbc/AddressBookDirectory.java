@@ -285,9 +285,9 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		return this.contactsList;
 	}
 
-	public void addContactToUpdatedDatabse(int id, String firstName, String lastName, long phoneNumber, String email, int addressId, String city, String state, long zip, String dateAdded) {
+	public void addContactToUpdatedDatabse(int id, String firstName, String lastName, long phoneNumber, String email, int addressId, String dateAdded, int addressBookId) {
 		
-		contactsList.add(addressBookDbService.addNewContactToContacts(id, firstName, lastName, phoneNumber, email, addressId, city, state, zip, dateAdded));
+		contactsList.add(addressBookDbService.addNewContactToContacts(id, firstName, lastName, phoneNumber, email, addressId, dateAdded, addressBookId));
 	}	
 	
 }
