@@ -1,10 +1,8 @@
 package com.bridgelabz.addressbooksystemjdbc;
- 
-import java.time.LocalDate;
+
 import java.util.ArrayList;  
 import java.util.List;
 import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -175,14 +173,15 @@ public class AddressBookTest {
 	}
 	
 	@Test
-	public void givenNewEmployee_WhenAdded_ShouldSyncWithUpdatedDB() {
+	public void givenNewContact_WhenAdded_ShouldSyncWithUpdatedDB() {
 		
 		String dateAdded = "2017-02-12";
 		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
 		addressBookDirectory.readContactDetails(IOService.DB_IO);
-		addressBookDirectory.addContactToUpdatedDatabse(8, "Amy", "Gonzales", 123456789, "amy@gmail.com", 6, "Kodagu", "Karnataka", 345567, dateAdded);
+		addressBookDirectory.addContactToUpdatedDatabse(9, "Brian", "Destroy", 1234567890, "amy@gmail.com", 1, dateAdded, 1);
+		List<ContactPerson> employeePayrollData = addressBookDirectory.readContactDetails(IOService.DB_IO);
 
-		boolean result = addressBookDirectory.checkContactDetailsInSyncWithDB("Amy");
+		boolean result = addressBookDirectory.checkContactDetailsInSyncWithDB("Brian");
 		Assert.assertTrue(result);
 		
 	}
