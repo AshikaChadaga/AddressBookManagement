@@ -1,7 +1,6 @@
 package com.bridgelabz.addressbooksystemjdbc;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList; 
 import java.util.HashMap;
 import java.util.List;
@@ -39,42 +38,70 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 					"1.Add an Address Book\n2.Edit Existing Address Book\n3.Search Person By Region\n4.View People By Region\n5.Count People By Region\n6.Display Address book Directory\n7.Read From Json\n8.Exit Address book System");
 
 			switch (scannerObject.nextInt()) {
+			
 			case 1:
-				addAddressBook();
+				System.out.println("Enter the name of the Address Book you want to add");
+				String bookNameToAdd = scannerObject.next();
+				addAddressBook(bookNameToAdd);
 				break;
+				
 			case 2:
-				editAddressBook();
+				System.out.println("Enter the Name of the Address Book which you want to edit:");
+				String addressBookToEdit = scannerObject.next();
+				editAddressBook(addressBookToEdit);
 				break;
+				
 			case 3:
 				System.out.println("Enter \n1.Search By City\n2.Search By State");
 				int searChoice = scannerObject.nextInt();
-				if(searChoice==1)
-					searchByCity();
-				else 
-					searchByState();
+				if(searChoice==1){
+					System.out.println("Enter the name of the City where the Person resides : ");
+					String cityName = scannerObject.next();
+					System.out.println("Enter the name of the Person : ");
+					String personName = scannerObject.next();
+					searchByCity(cityName, personName);
+				}
+				else {
+					System.out.println("Enter the name of the State where the Person resides : ");
+					String stateName = scannerObject.next();
+					System.out.println("Enter the name of the Person : ");
+					String personName = scannerObject.next();
+					searchByState(stateName, personName);
+				}
 				break;
+				
 			case 4:
 				System.out.println("Enter \n1.Display By City\n2.Display By State");
 				int displayChoice = scannerObject.nextInt();
+				System.out.println("Enter the name of the region :");
+				String regionName = scannerObject.next();
+				
 				if(displayChoice==1)
-					displayPeopleByRegion(AddressBook.personByCity);
+					displayPeopleByRegion(regionName, AddressBook.personByCity);
 				else 
-					displayPeopleByRegion(AddressBook.personByState);
+					displayPeopleByRegion(regionName, AddressBook.personByState);
 				break;
+				
 			case 5:
 				System.out.println("Enter \n1.Display By City\n2.Display By State");
 				int countChoice = scannerObject.nextInt();
+				System.out.println("Enter the name of the region :");
+				String region = scannerObject.next();
+				
 				if(countChoice==1)
-					countPeopleByRegion(AddressBook.personByCity);
+					countPeopleByRegion(region, AddressBook.personByCity);
 				else 
-					countPeopleByRegion(AddressBook.personByState);
+					countPeopleByRegion(region, AddressBook.personByState);
 				break;
+				
 			case 6:
 				displayDirectoryContents();
 				break;
+				
 			case 7:
 				readDataFromJson();
 				break;
+				
 			case 8:
 				moreChanges = false;
 				System.out.println("Exiting Address Book Directory !");
@@ -84,11 +111,8 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 	}
 	
 	@Override
-	public void addAddressBook() {
-
-		System.out.println("Enter the name of the Address Book you want to add");
-		String bookNameToAdd = scannerObject.next();
-
+	public void addAddressBook(String bookNameToAdd) {
+		
 		if(addressBookDirectory.containsKey(bookNameToAdd)) {
 			System.out.println("Book Name Already Exists");
 			return;
@@ -96,14 +120,10 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		AddressBook addressBook = new AddressBook();
 		addressBook.setAddressBookName(bookNameToAdd);
 		addressBookDirectory.put(bookNameToAdd, addressBook);
-
 	}
 	
 	@Override
-	public void editAddressBook() {
-
-		System.out.println("Enter the Name of the Address Book which you want to edit:");
-		String addressBookToEdit = scannerObject.next();
+	public void editAddressBook(String addressBookToEdit) {
 
 		if(addressBookDirectory.containsKey(addressBookToEdit)) {
 			addressBook = addressBookDirectory.get(addressBookToEdit);
@@ -112,49 +132,32 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		else {
 			System.out.println("Book Does Not Exist");
 		}
-
 	}
 	
 	@Override
-	public void searchByCity() {
-		
-		System.out.println("Enter the name of the City where the Person resides : ");
-		String cityName = scannerObject.next();
-		System.out.println("Enter the name of the Person : ");
-		String personName = scannerObject.next();
+	public void searchByCity(String cityName, String personName) {
 		
 		for(AddressBook addressBook : addressBookDirectory.values()) {
 			ArrayList<ContactPerson> contactList = addressBook.getContact();
 			contactList.stream()
 				.filter(person -> person.getFirstName().equals(personName) && person.address.getCity().equals(cityName))
-				.forEach(person -> System.out.println(person));
-			
+				.forEach(person -> System.out.println(person));	
 		}		
 	}
 	
 	@Override
-	public void searchByState() {
-		
-		System.out.println("Enter the name of the State where the Person resides : ");
-		String stateName = scannerObject.next();
-		System.out.println("Enter the name of the Person : ");
-		String personName = scannerObject.next();
+	public void searchByState(String stateName, String personName) {
 		
 		for(AddressBook addressBook : addressBookDirectory.values()) {
 			ArrayList<ContactPerson> contactList = ((AddressBook) addressBook).getContact();
 			contactList.stream()
 				.filter(person -> person.getFirstName().equals(personName) && person.address.getState().equals(stateName))
 				.forEach(person -> System.out.println(person));
-			
 		}
-
 	}
 	
 	@Override
-	public void displayPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
-
-		System.out.println("Enter the name of the region :");
-		String regionName = scannerObject.next();
+	public void displayPeopleByRegion(String regionName, HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
 		
 		listToDisplay.values().stream()
 			.map(region -> region.stream()
@@ -163,10 +166,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 	}
 	
 	@Override
-	public void countPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
-
-		System.out.println("Enter the name of the region :");
-		String regionName = scannerObject.next();
+	public void countPeopleByRegion(String regionName, HashMap<String, ArrayList<ContactPerson>> listToDisplay) {
 		
 		long countPeople = listToDisplay.values().stream()
 				.map(region -> region.stream()
@@ -174,7 +174,6 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 					.count();
 					
 		System.out.println("Number of People residing in " + regionName+" are: "+countPeople+"\n");
-		
 	}
 	
 	@Override
@@ -214,6 +213,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 				.orElse(null);
 	}
 
+	@Override
 	public List<ContactPerson> readContactDetails(IOService ioService) {
 		
 		if(ioService.equals(IOService.DB_IO))
@@ -221,6 +221,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		return this.contactsList;	
 	}
 	
+	@Override
 	public Map<Integer,String> readAddressDetails(IOService ioService) {
 		
 		Map<Integer,String> contactsList = new HashMap<Integer,String>();
@@ -229,6 +230,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		return contactsList;
 	}
 
+	@Override
 	public List<ContactPerson> getEmployeeDetailsBasedOnCity(IOService ioService, String city) {
 		
 		List<ContactPerson> contactsList = new ArrayList<ContactPerson>();
@@ -237,6 +239,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		return contactsList;
 	}
 
+	@Override
 	public List<ContactPerson> getEmployeeDetailsBasedOnState(IOService ioService, String state) {
 		
 		List<ContactPerson> contactsList = new ArrayList<ContactPerson>();
@@ -245,6 +248,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		return contactsList;
 	}
 
+	@Override
 	public List<Integer> getCountOfEmployeesBasedOnCity(IOService ioService) {
 		
 		List<Integer> countBasedOnCity = new ArrayList<Integer>();
@@ -253,14 +257,24 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 		return countBasedOnCity;
 	}
 	
+	@Override
 	public List<Integer> getCountOfEmployeesBasedOnState(IOService ioService) {
 		
 		List<Integer> countBasedOnState = new ArrayList<Integer>();
 		if(ioService.equals(IOService.DB_IO))
 			countBasedOnState = addressBookDbService.getCountOfEmployeesBasedOnStateUsingStatement();
 		return countBasedOnState;
-	}	
+	}
 	
+	@Override
+	public List<ContactPerson> getContactsBasedOnStartDateUsingPreparedStatement(IOService ioService, String startDate, String endDate) {
+		
+		if(ioService.equals(IOService.DB_IO))
+			this.contactsList = addressBookDbService.getContactsBasedOnStartDateUsingPreparedStatement(startDate, endDate);
+		return this.contactsList;
+	}
+	
+	@Override
 	public void updateContactLastName(String firstName, String lastName) {
 		
 		int result = addressBookDbService.updateContactData(firstName, lastName);
@@ -272,22 +286,41 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 			contactDetailsData.setLastName(lastName);		
 	}
 	
+	@Override
 	public boolean checkContactDetailsInSyncWithDB(String firstName) {
 		
 		List<ContactPerson> contactDetailsList = addressBookDbService.getContactDataUsingName(firstName);
 		return contactDetailsList.get(0).equals(getContactData(firstName));
 	}
 
-	public List<ContactPerson> getContactsBasedOnStartDateUsingPreparedStatement(IOService ioService, String startDate, String endDate) {
-		
-		if(ioService.equals(IOService.DB_IO))
-			this.contactsList = addressBookDbService.getContactsBasedOnStartDateUsingPreparedStatement(startDate, endDate);
-		return this.contactsList;
-	}
-
-	public void addContactToUpdatedDatabse(int id, String firstName, String lastName, long phoneNumber, String email, int addressId, String dateAdded, int addressBookId) {
+	@Override
+	public void addContactToUpdatedDatabase(int id, String firstName, String lastName, long phoneNumber, String email, int addressId, String dateAdded, int addressBookId) {
 		
 		contactsList.add(addressBookDbService.addNewContactToContacts(id, firstName, lastName, phoneNumber, email, addressId, dateAdded, addressBookId));
-	}	
+	}
+	
+	@Override
+	public void addContacts(List<ContactPerson> contactsListToBeAdded) {
+	        Map<Integer,Boolean> additionStatus = new HashMap<Integer, Boolean>();
+	        contactsListToBeAdded.forEach(contact -> {
+	            Runnable task = () -> {
+	                additionStatus.put(contact.hashCode(), false);
+	                System.out.println("Contact being added:(threads) "+Thread.currentThread().getName());
+	                this.addContactToUpdatedDatabase(contact.getContactid(),contact.getFirstName(),contact.getLastName(),contact.getPhoneNumber(),contact.getEmail(),contact.getAddress().getAddressId(),contact.getDateAdded(), contact.getAddressBookId());
+	                additionStatus.put(contact.hashCode(), true);
+	                System.out.println("Contact added: (threads)"+Thread.currentThread().getName());
+	            };
+	            Thread thread = new Thread(task,contact.getFirstName());
+	            thread.start();
+	        });
+	        while(additionStatus.containsValue(false)) {
+	            try {
+	                Thread.sleep(10);
+	            }catch(InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        System.out.println(contactsListToBeAdded);
+	    }
 	
 }
