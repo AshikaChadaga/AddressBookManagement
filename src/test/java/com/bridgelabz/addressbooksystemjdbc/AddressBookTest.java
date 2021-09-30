@@ -123,7 +123,7 @@ public class AddressBookTest {
 	public void givenAddressBookInDB_ShouldReturnCountOfBasedOnCity() {
 		
 		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
-		List<Integer> expectedCountBasedOnGender = new ArrayList();
+		List<Integer> expectedCountBasedOnGender = new ArrayList<Integer>();
 		expectedCountBasedOnGender.add(1);
 		expectedCountBasedOnGender.add(2);
 		expectedCountBasedOnGender.add(1);
@@ -140,7 +140,7 @@ public class AddressBookTest {
 	public void givenAddressBookInDB_ShouldReturnCountOfBasedOnState() {
 		
 		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
-		List<Integer> expectedCountBasedOnGender = new ArrayList();
+		List<Integer> expectedCountBasedOnGender = new ArrayList<Integer>();
 		expectedCountBasedOnGender.add(1);
 		expectedCountBasedOnGender.add(4);
 		expectedCountBasedOnGender.add(2);
@@ -178,12 +178,27 @@ public class AddressBookTest {
 		String dateAdded = "2017-02-12";
 		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
 		addressBookDirectory.readContactDetails(IOService.DB_IO);
-		addressBookDirectory.addContactToUpdatedDatabse(9, "Brian", "Destroy", 1234567890, "amy@gmail.com", 1, dateAdded, 1);
+		addressBookDirectory.addContactToUpdatedDatabase(9, "Brian", "Destroy", 1234567890, "amy@gmail.com", 1, dateAdded, 1);
 		List<ContactPerson> employeePayrollData = addressBookDirectory.readContactDetails(IOService.DB_IO);
 
 		boolean result = addressBookDirectory.checkContactDetailsInSyncWithDB("Brian");
 		Assert.assertTrue(result);
 		
 	}
+	
+	@Test
+    public void given3Contacts_WhenAddedToDatabase_ShouldMatchContactEntries() {
+		
+		AddressBookDirectory addressBookDirectory = new AddressBookDirectory();
+		addressBookDirectory.readContactDetails(IOService.DB_IO);
+        List<ContactPerson> contactToBeAdded = new ArrayList<ContactPerson>();
+        contactToBeAdded.add(new ContactPerson(10, "Rick", "Sanchez", Long.parseUnsignedLong("9321546787"), "rick@gmail.com", 4, "2019-01-13", 2));
+        contactToBeAdded.add(new ContactPerson(11, "Morty", "Sanchez", Long.parseUnsignedLong("6453847569"), "morty@gmail.com", 5, "2015-03-16", 1));
+        contactToBeAdded.add(new ContactPerson(12, "Phil", "Dunphy", Long.parseUnsignedLong("9483775646"), "phil@gmail.com", 2, "2016-09-24", 2));
+       
+        addressBookDirectory.addContacts(contactToBeAdded);
+        List<ContactPerson> contactsInDatabase = addressBookDirectory.readContactDetails(IOService.DB_IO);
+        Assert.assertEquals(12, contactsInDatabase.size());
+    }
 	
 }
