@@ -12,6 +12,16 @@ public class Address {
 	
 	@CsvBindByName(column = "Zip Code")
 	private long zip;
+	
+	public int addressId;
+
+	public int getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(int addressId) {
+		this.addressId = addressId;
+	}
 
 	public String getCity() {
 		return city;
