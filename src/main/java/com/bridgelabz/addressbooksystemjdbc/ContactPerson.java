@@ -1,6 +1,6 @@
 package com.bridgelabz.addressbooksystemjdbc;
 
-import java.time.LocalDate;
+import java.util.Objects;
 
 import com.opencsv.bean.CsvBindByName;
 
@@ -20,10 +20,10 @@ public class ContactPerson {
 	@CsvBindByName(column = "Phone Number")
 	private long phoneNumber;
 	
-	private LocalDate dateAdded;
-	
+	private String dateAdded;
+	private int addressBookId;
 	public Address address = new Address();
-	
+
 	public ContactPerson(int id, String firstName, String lastName, String email, long phoneNumber) {
 		
 		this.contactid = id;
@@ -41,6 +41,22 @@ public class ContactPerson {
 		this.address.setZip(zip);
 	}
 	
+	public ContactPerson(int id, String firstName, String lastName, long phoneNumber, String email, int addressId, String dateAdded, int addressBookId) {
+		
+		this(id, firstName, lastName, email, phoneNumber);
+		this.address.setAddressId(addressId);
+		this.dateAdded = dateAdded;
+		this.addressBookId = addressBookId;
+	}
+	
+	public int getAddressBookId() {
+		return addressBookId;
+	}
+
+	public void setAddressBookId(int addressBookId) {
+		this.addressBookId = addressBookId;
+	}
+
 	public void setContactid(int contactid) {
 		this.contactid = contactid;
 	}
@@ -49,11 +65,11 @@ public class ContactPerson {
 		return contactid;
 	}
 	
-	public LocalDate getDateAdded() {
+	public String getDateAdded() {
 		return dateAdded;
 	}
 
-	public void setDateAdded(LocalDate dateAdded) {
+	public void setDateAdded(String dateAdded) {
 		this.dateAdded = dateAdded;
 	}
 
@@ -105,6 +121,11 @@ public class ContactPerson {
 		
 		return "First Name - "+firstName+", Last Name - "+lastName+", Phone Number - "+phoneNumber+", Email - "+email+", City - "+address.getCity()+", State - "+address.getState()+", Zip Code - "+address.getZip();
 	}
+	
+	 @Override
+     public int hashCode() {
+         return Objects.hash(firstName,lastName);
+     }
 	
 	@Override
 	public boolean equals(Object object) {
