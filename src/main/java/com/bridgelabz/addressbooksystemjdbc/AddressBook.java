@@ -319,7 +319,7 @@ public class AddressBook implements AddressBookIF {
 	@Override
 	public void printSortedList(List<ContactPerson> sortedContactList) {
 		System.out.println("------ Sorted Address Book "+this.getAddressBookName()+" ------");
-		Iterator iterator = sortedContactList.iterator();
+		Iterator<ContactPerson> iterator = sortedContactList.iterator();
 		while (iterator.hasNext()) {
 			System.out.println(iterator.next());
 			System.out.println();
