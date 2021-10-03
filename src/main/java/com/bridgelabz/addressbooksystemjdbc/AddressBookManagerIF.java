@@ -1,13 +1,13 @@
 package com.bridgelabz.addressbooksystemjdbc;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bridgelabz.addressbooksystemjdbc.AddressBook.IOService;
+import com.bridgelabz.addressbooksystemjdbc.InputOutputService.IOService;
 
-public interface AddressBookDirectoryIF {
+public interface AddressBookManagerIF {
 	
 	public void addAddressBook(String bookNameToAdd);
 
@@ -45,7 +45,7 @@ public interface AddressBookDirectoryIF {
 	
 	public boolean checkContactDetailsInSyncWithDB(String firstName);
 	
-	public void addContactToUpdatedDatabase(int id, String firstName, String lastName, long phoneNumber, String email, int addressId, String dateAdded, int addressBookId);
+	public void addContactToUpdatedDatabase(ContactPerson contact);
 	
 	public void addContacts(List<ContactPerson> contactsListToBeAdded);
 }
