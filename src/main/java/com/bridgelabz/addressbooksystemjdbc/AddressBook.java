@@ -1,6 +1,6 @@
 package com.bridgelabz.addressbooksystemjdbc;
 
-import java.io.FileWriter; 
+import java.io.FileWriter;  
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -23,6 +23,7 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import com.bridgelabz.addressbooksystemjdbc.InputOutputService.IOService;
 
 public class AddressBook implements AddressBookIF {
 
@@ -35,10 +36,6 @@ public class AddressBook implements AddressBookIF {
 	public String addressBookName;
 	public int addressBookId;
 	public String addressBookType;
-
-	public enum IOService {
-		CONSOLE_IO, FILE_IO, DB_IO
-	}
 	
 	public String getAddressBookName() {
 		return addressBookName;
