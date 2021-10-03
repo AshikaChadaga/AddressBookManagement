@@ -1,10 +1,10 @@
 package com.bridgelabz.addressbooksystemjdbc;
 
-import java.io.IOException; 
+import java.io.IOException;  
 import java.util.List;
 import java.util.Scanner;
 
-import com.bridgelabz.addressbooksystemjdbc.AddressBook.IOService;
+import com.bridgelabz.addressbooksystemjdbc.InputOutputService.IOService;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
