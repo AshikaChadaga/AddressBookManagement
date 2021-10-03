@@ -1,15 +1,14 @@
 package com.bridgelabz.addressbooksystemjdbc;
 
-import java.io.IOException;
+import java.io.IOException; 
 import java.util.ArrayList; 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import com.bridgelabz.addressbooksystemjdbc.AddressBook.IOService;
+import com.bridgelabz.addressbooksystemjdbc.InputOutputService.IOService;
 
-
-public class AddressBookDirectory implements AddressBookDirectoryIF{
+public class AddressBookManager implements AddressBookManagerIF{
 	
 	public AddressBook addressBook;
 	List<ContactPerson> contactsList = new ArrayList<ContactPerson>();
@@ -18,11 +17,11 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 	private AddressBookDBService addressBookDbService;
 	
 
-	public AddressBookDirectory(){
+	public AddressBookManager(){
 		addressBookDbService =  AddressBookDBService.getInstance();
 	}
 	
-	public AddressBookDirectory(List<ContactPerson> contactList) {
+	public AddressBookManager(List<ContactPerson> contactList) {
 		this();
 		this.contactsList = contactList;
 	}
@@ -294,9 +293,9 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 	}
 
 	@Override
-	public void addContactToUpdatedDatabase(int id, String firstName, String lastName, long phoneNumber, String email, int addressId, String dateAdded, int addressBookId) {
+	public void addContactToUpdatedDatabase(ContactPerson newContact) {
 		
-		contactsList.add(addressBookDbService.addNewContactToContacts(id, firstName, lastName, phoneNumber, email, addressId, dateAdded, addressBookId));
+		contactsList.add(addressBookDbService.addNewContactToContacts(newContact));
 	}
 	
 	@Override
@@ -306,7 +305,7 @@ public class AddressBookDirectory implements AddressBookDirectoryIF{
 	            Runnable task = () -> {
 	                additionStatus.put(contact.hashCode(), false);
 	                System.out.println("Contact being added:(threads) "+Thread.currentThread().getName());
-	                this.addContactToUpdatedDatabase(contact.getContactid(),contact.getFirstName(),contact.getLastName(),contact.getPhoneNumber(),contact.getEmail(),contact.getAddress().getAddressId(),contact.getDateAdded(), contact.getAddressBookId());
+	                this.addContactToUpdatedDatabase(contact);
 	                additionStatus.put(contact.hashCode(), true);
 	                System.out.println("Contact added: (threads)"+Thread.currentThread().getName());
 	            };
